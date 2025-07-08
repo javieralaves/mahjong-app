@@ -86,6 +86,17 @@ class GameState: ObservableObject {
         winningPlayer = nil
     }
 
+    /// Clears all state and starts a completely fresh round.
+    func resetGame() {
+        players = (0..<4).map { Player(id: $0) }
+        currentTurn = 0
+        discardPile = []
+        hasDrawnThisTurn = false
+        winningPlayer = nil
+        shuffleWall()
+        dealInitialHands()
+    }
+
     /// Draws a single tile for the provided player.
     func drawTile(for player: Player) {
         guard winningPlayer == nil else { return }

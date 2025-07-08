@@ -41,3 +41,6 @@ A simple turn manager now rotates play between all four participants in clockwis
 
 ### Win Detection
 After each draw the hand is checked for a basic Mahjong win consisting of four melds and one pair. The logic lives in `Services/HandValidator.swift`. When a player draws a winning tile the game state sets `winningPlayer` and further turns are disabled. `MainView` displays a congratulatory message to indicate the winner.
+
+### New Game Reset
+When a win occurs a **New Game** button appears. Tapping it calls `GameState.resetGame()` which clears all hands and discards, reshuffles the wall, deals fresh hands, and resets the turn to Player 1. No state from the previous round is preserved.
