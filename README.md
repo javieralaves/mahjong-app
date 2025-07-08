@@ -26,3 +26,6 @@ Mahjong4/
 3. **Phase 3 – Networking**: Add multiplayer and networking capabilities.
 
 Updates to this plan will occur as development progresses.
+
+## Tile Wall and Initial Hands
+The game state builds a complete wall of 136 tiles which is shuffled at the start of a session. Each of the four players is then dealt 13 tiles from the top of this wall. The hands are sorted for readability using helpers in `Utilities/TileHelpers.swift`.
