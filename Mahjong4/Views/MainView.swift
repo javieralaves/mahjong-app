@@ -1,5 +1,14 @@
 import SwiftUI
 
+struct TileBackView: View {
+    var body: some View {
+        Rectangle()
+            .fill(Color.gray.opacity(0.3))
+            .frame(width: 40, height: 60)
+            .cornerRadius(4)
+    }
+}
+
 struct MainView: View {
     @StateObject private var gameState = GameState()
 
@@ -8,24 +17,38 @@ struct MainView: View {
             Text("Mahjong4")
                 .font(.largeTitle)
 
-            Button("Draw Tile") {
-                if let player = gameState.players.first {
-                    gameState.drawTile(for: player)
-                }
-            }
-            .disabled(gameState.hasDrawnThisTurn || (gameState.players.first?.hand.count ?? 0) >= 14)
-
-            Text("Player 1 Hand")
+            Text("Current Turn: Player \(gameState.currentTurn + 1)")
                 .font(.headline)
 
-            TileRowView(
-                tiles: gameState.players.first?.hand ?? [],
-                onTileTap: { tile in
-                    if let player = gameState.players.first {
-                        gameState.discardTile(tile, for: player)
+            ForEach(gameState.players) { player in
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Player \(player.id + 1) Hand")
+                        .font(.headline)
+
+                    if player.id == gameState.currentTurn {
+                        Button("Draw Tile") {
+                            gameState.drawTile(for: player)
+                        }
+                        .disabled(gameState.hasDrawnThisTurn || player.hand.count >= 14)
+
+                        TileRowView(
+                            tiles: player.hand,
+                            onTileTap: { tile in
+                                gameState.discardTile(tile, for: player)
+                            }
+                        )
+                    } else {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 4) {
+                                ForEach(0..<player.hand.count, id: \.self) { _ in
+                                    TileBackView()
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
                     }
                 }
-            )
+            }
 
             if !gameState.discardPile.isEmpty {
                 DiscardPileView(tiles: gameState.discardPile)
