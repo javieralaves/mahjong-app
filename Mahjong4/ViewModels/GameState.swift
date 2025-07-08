@@ -8,6 +8,12 @@ class GameState: ObservableObject {
     /// Four players participating in the game.
     @Published private(set) var players: [Player] = (0..<4).map { Player(id: $0) }
 
+    /// Tiles discarded by Player 1.
+    @Published private(set) var discardPile: [Tile] = []
+
+    /// Indicates if Player 1 has already drawn this turn.
+    @Published var hasDrawnThisTurn: Bool = false
+
     /// Creates and shuffles the full wall of 136 tiles.
     func shuffleWall() {
         var tiles: [Tile] = []
@@ -63,5 +69,33 @@ class GameState: ObservableObject {
         }
 
         print("Remaining tiles in wall: \(wall.count)")
+    }
+
+    /// Resets state for a new game session.
+    func startNewGame() {
+        shuffleWall()
+        dealInitialHands()
+        discardPile = []
+        hasDrawnThisTurn = false
+    }
+
+    /// Draws a single tile for the provided player.
+    func drawTile(for player: Player) {
+        guard let index = players.firstIndex(where: { $0.id == player.id }) else { return }
+        guard !hasDrawnThisTurn, players[index].hand.count < 14, let tile = wall.first else { return }
+
+        players[index].hand.append(tile)
+        wall.removeFirst()
+        hasDrawnThisTurn = true
+    }
+
+    /// Discards the specified tile from the player's hand.
+    func discardTile(_ tile: Tile, for player: Player) {
+        guard let index = players.firstIndex(where: { $0.id == player.id }) else { return }
+        guard hasDrawnThisTurn, let removeIndex = players[index].hand.firstIndex(of: tile) else { return }
+
+        players[index].hand.remove(at: removeIndex)
+        discardPile.append(tile)
+        hasDrawnThisTurn = false
     }
 }

@@ -32,3 +32,6 @@ The game state builds a complete wall of 136 tiles which is shuffled at the star
 
 ## Player Hand Display (Phase 1)
 The first visual component renders a player's 13-tile hand. `TileView` shows a single tile using placeholder text while `TileRowView` arranges an array of tiles in a horizontal scrollable row. `MainView` now displays Player 1's hand using these views.
+
+### Draw and Discard Interaction
+Player 1 can tap **Draw Tile** to take a tile from the wall. Once a fourteenth tile is in hand, tapping any tile discards it to a simple pile and re-enables the draw button. This loop mimics the real Mahjong flow of draw then discard.
