@@ -24,6 +24,10 @@ This document describes the layout and conventions used in this repository. Alwa
 - The `GameState` view model is responsible for creating and shuffling the full wall of 136 tiles. Use `shuffleWall()` to populate the wall array.
 - Initial hand distribution for the four players occurs in `dealInitialHands()` within the same file.
 
+### Draw & Discard
+- `GameState` owns the `drawTile(for:)` and `discardTile(_:for:)` methods. These modify a player's hand, update the discard pile, and toggle a `hasDrawnThisTurn` flag.
+- `TileView` supports an optional `onTap` closure so views like `TileRowView` can forward tap events for discarding.
+
 ## Player Model
 - Located at `Mahjong4/Models/Player.swift`.
 - Contains `id` (0–3) and `hand` (array of `Tile`).

@@ -3,6 +3,8 @@ import SwiftUI
 /// Displays a single Mahjong tile using placeholder text.
 struct TileView: View {
     let tile: Tile
+    var onTap: (() -> Void)? = nil
+
     var body: some View {
         Text(tile.displayString)
             .font(.caption)
@@ -10,6 +12,9 @@ struct TileView: View {
             .background(Color.white)
             .cornerRadius(4)
             .shadow(radius: 1)
+            .onTapGesture {
+                onTap?()
+            }
     }
 }
 
