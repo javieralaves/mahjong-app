@@ -45,3 +45,8 @@ This document describes the layout and conventions used in this repository. Alwa
 - `GameState` stores `currentTurn` (0-3) to track whose turn it is and exposes `advanceTurn()` which increments this value modulo four and resets `hasDrawnThisTurn`.
 - `drawTile(for:)` and `discardTile(_:for:)` must check that the passed player matches `currentTurn`. Successful discards call `advanceTurn()` automatically.
 - Views enable draw and discard interaction only for the active player indicated by `currentTurn`.
+
+### Win Validation
+- `Services/HandValidator.swift` contains `isWinningHand(_:)` which checks for four melds plus a pair.
+- After `drawTile(for:)` adds a fourteenth tile, the validator runs. If it returns `true`, `winningPlayer` is set on `GameState`.
+- When `winningPlayer` is non-nil the game freezes: draw, discard and turn advancement calls exit early until `startNewGame()` resets state.
