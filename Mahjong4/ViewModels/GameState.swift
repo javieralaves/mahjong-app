@@ -68,7 +68,7 @@ class GameState: ObservableObject {
                     wall.removeFirst()
                 }
             }
-            hand = TileHelpers.sortTiles(hand)
+            hand = TileHelpers.sortHand(hand)
             players[index].hand = hand
             print("Player \(players[index].id) hand: \(hand)")
         }
@@ -95,7 +95,7 @@ class GameState: ObservableObject {
 
         players[index].hand.append(tile)
         wall.removeFirst()
-        players[index].hand = TileHelpers.sortTiles(players[index].hand)
+        players[index].hand = TileHelpers.sortHand(players[index].hand)
         hasDrawnThisTurn = true
 
         if HandValidator.isWinningHand(players[index].hand) {
@@ -113,7 +113,7 @@ class GameState: ObservableObject {
 
         players[index].hand.remove(at: removeIndex)
         discardPile.append(tile)
-        players[index].hand = TileHelpers.sortTiles(players[index].hand)
+        players[index].hand = TileHelpers.sortHand(players[index].hand)
         hasDrawnThisTurn = false
         advanceTurn()
     }
