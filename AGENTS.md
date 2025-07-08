@@ -40,3 +40,8 @@ This document describes the layout and conventions used in this repository. Alwa
 - `TileView` and `TileRowView` are located in `Mahjong4/Views/`.
 - Name view files using the pattern `NameView.swift` (PascalCase) and keep SwiftUI code free of game logic.
 - Views are fed data from view models; they should not modify `GameState` directly.
+
+### Turn Management
+- `GameState` stores `currentTurn` (0-3) to track whose turn it is and exposes `advanceTurn()` which increments this value modulo four and resets `hasDrawnThisTurn`.
+- `drawTile(for:)` and `discardTile(_:for:)` must check that the passed player matches `currentTurn`. Successful discards call `advanceTurn()` automatically.
+- Views enable draw and discard interaction only for the active player indicated by `currentTurn`.

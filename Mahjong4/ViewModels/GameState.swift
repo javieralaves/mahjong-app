@@ -8,11 +8,13 @@ class GameState: ObservableObject {
     /// Four players participating in the game.
     @Published private(set) var players: [Player] = (0..<4).map { Player(id: $0) }
 
-    /// Tiles discarded by Player 1.
+    /// Tiles discarded during play.
     @Published private(set) var discardPile: [Tile] = []
 
-    /// Indicates if Player 1 has already drawn this turn.
+    /// Indicates if the current player has drawn this turn.
     @Published var hasDrawnThisTurn: Bool = false
+    /// Index of the player whose turn it is. 0 = East.
+    @Published var currentTurn: Int = 0
 
     /// Creates and shuffles the full wall of 136 tiles.
     func shuffleWall() {
@@ -73,6 +75,7 @@ class GameState: ObservableObject {
 
     /// Resets state for a new game session.
     func startNewGame() {
+        currentTurn = 0
         shuffleWall()
         dealInitialHands()
         discardPile = []
@@ -82,20 +85,29 @@ class GameState: ObservableObject {
     /// Draws a single tile for the provided player.
     func drawTile(for player: Player) {
         guard let index = players.firstIndex(where: { $0.id == player.id }) else { return }
+        guard player.id == currentTurn else { return }
         guard !hasDrawnThisTurn, players[index].hand.count < 14, let tile = wall.first else { return }
 
         players[index].hand.append(tile)
         wall.removeFirst()
         hasDrawnThisTurn = true
+        
     }
 
     /// Discards the specified tile from the player's hand.
     func discardTile(_ tile: Tile, for player: Player) {
+        guard player.id == currentTurn else { return }
         guard let index = players.firstIndex(where: { $0.id == player.id }) else { return }
         guard hasDrawnThisTurn, let removeIndex = players[index].hand.firstIndex(of: tile) else { return }
 
         players[index].hand.remove(at: removeIndex)
         discardPile.append(tile)
+        hasDrawnThisTurn = false
+        advanceTurn()
+    }
+    /// Advances to the next player's turn clockwise.
+    func advanceTurn() {
+        currentTurn = (currentTurn + 1) % 4
         hasDrawnThisTurn = false
     }
 }
