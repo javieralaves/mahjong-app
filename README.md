@@ -1,1 +1,28 @@
-# mahjong-app
+# Mahjong4
+
+Mahjong4 is an offline prototype of a four-player Mahjong game for iOS. This repository contains the initial scaffolding for Phase 1 development using Swift and SwiftUI.
+
+## Current Phase
+- **Phase 1: Offline Prototype** – establishing project structure, core models, and placeholder logic. No networking or multiplayer features are implemented at this stage.
+
+## Tech Stack
+- Swift 5
+- SwiftUI (targeting iOS 16.0+)
+
+## Folder Overview
+```
+Mahjong4/
+├── Models/        # Game data types such as tiles and hands
+├── Views/         # SwiftUI views
+├── ViewModels/    # Observable objects for view state
+├── Services/      # Future services (e.g., persistence)
+├── Resources/     # Assets and localized strings
+└── Utilities/     # Helpers and extensions
+```
+
+## Development Phases
+1. **Phase 1 – Offline Prototype**: Build the basic skeleton, tile definitions, and simple UI.
+2. **Phase 2 – Game Logic**: Implement tile and hand management, scoring, and turn flow.
+3. **Phase 3 – Networking**: Add multiplayer and networking capabilities.
+
+Updates to this plan will occur as development progresses.
