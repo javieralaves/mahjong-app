@@ -51,4 +51,9 @@ This document describes the layout and conventions used in this repository. Alwa
 ### Win Validation
 - `Services/HandValidator.swift` contains `isWinningHand(_:)` which checks for four melds plus a pair.
 - After `drawTile(for:)` adds a fourteenth tile, the validator runs. If it returns `true`, `winningPlayer` is set on `GameState`.
-- When `winningPlayer` is non-nil the game freezes: draw, discard and turn advancement calls exit early until `startNewGame()` resets state.
+- When `winningPlayer` is non-nil the game freezes: draw, discard and turn advancement calls exit early until `resetGame()` resets state.
+
+### Game Reset
+- `GameState.resetGame()` (ViewModels/GameState.swift) clears all hands and discards, shuffles a new wall, deals fresh hands and resets `currentTurn` and `winningPlayer`.
+- The UI should show a "New Game" button only after a win and call this method on tap.
+- Each reset starts a stateless new round; no previous game data is kept.

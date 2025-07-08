@@ -21,6 +21,9 @@ struct MainView: View {
                 Text("\u{1F389} Player \(winner + 1) wins!")
                     .font(.title)
                     .foregroundColor(.green)
+                Button("New Game") {
+                    gameState.resetGame()
+                }
             }
 
             Text("Current Turn: Player \(gameState.currentTurn + 1)")
@@ -66,7 +69,7 @@ struct MainView: View {
         }
         .padding()
         .onAppear {
-            gameState.startNewGame()
+            gameState.resetGame()
         }
     }
 }
