@@ -7,8 +7,15 @@ struct TileRowView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 4) {
-                ForEach(Array(tiles.enumerated()), id: \".offset\") { _, tile in
+                ForEach(Array(tiles.enumerated()), id: \".offset\") { index, tile in
                     TileView(tile: tile, onTap: { onTileTap?(tile) })
+                    if index < tiles.count - 1 {
+                        let current = TileHelpers.suitGroup(for: tile)
+                        let next = TileHelpers.suitGroup(for: tiles[index + 1])
+                        if current != next {
+                            Color.clear.frame(width: 8)
+                        }
+                    }
                 }
             }
             .padding(.horizontal)

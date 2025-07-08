@@ -33,8 +33,10 @@ This document describes the layout and conventions used in this repository. Alwa
 - Contains `id` (0–3) and `hand` (array of `Tile`).
 
 ## Sorting Convention
-- Tile sorting is implemented in `Utilities/TileHelpers.swift`.
-- Hands are sorted by suit in the order: Bamboo, Character, Dot, Winds (East–North), Dragons (Red–White), Flowers, Seasons, and then by numeric value within each group.
+- Sorting helpers live in `Utilities/TileHelpers.swift`.
+- Use `sortHand(_:)` to arrange any array of tiles.
+- Tiles are ordered Characters → Bamboo → Dots → Winds (East–North) → Dragons (Red–White) → Flowers → Seasons with numeric order within each group.
+- Hands are sorted after the initial deal, after each draw, and after each discard. Do not implement custom sorting in views or other view models; always use the helper.
 
 ## UI Components
 - `TileView` and `TileRowView` are located in `Mahjong4/Views/`.

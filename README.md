@@ -28,7 +28,7 @@ Mahjong4/
 Updates to this plan will occur as development progresses.
 
 ## Tile Wall and Initial Hands
-The game state builds a complete wall of 136 tiles which is shuffled at the start of a session. Each of the four players is then dealt 13 tiles from the top of this wall. The hands are sorted for readability using helpers in `Utilities/TileHelpers.swift`.
+The game state builds a complete wall of 136 tiles which is shuffled at the start of a session. Each player is dealt 13 tiles from the top of this wall. Hands are automatically arranged using `TileHelpers.sortHand` after dealing and whenever tiles are drawn or discarded.
 
 ## Player Hand Display (Phase 1)
 The first visual component renders a player's 13-tile hand. `TileView` shows a single tile using placeholder text while `TileRowView` arranges an array of tiles in a horizontal scrollable row. `MainView` now displays each player's hand using these views.
