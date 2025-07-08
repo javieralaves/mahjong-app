@@ -6,7 +6,9 @@ class GameState: ObservableObject {
     @Published private(set) var wall: [Tile] = []
 
     /// Four players participating in the game.
-    @Published private(set) var players: [Player] = (0..<4).map { Player(id: $0) }
+    @Published private(set) var players: [Player] = (0..<4).map {
+        Player(id: $0, isCPU: $0 != 0)
+    }
 
     /// Tiles discarded during play.
     @Published private(set) var discardPile: [Tile] = []
@@ -78,23 +80,26 @@ class GameState: ObservableObject {
 
     /// Resets state for a new game session.
     func startNewGame() {
+        players = (0..<4).map { Player(id: $0, isCPU: $0 != 0) }
         currentTurn = 0
         shuffleWall()
         dealInitialHands()
         discardPile = []
         hasDrawnThisTurn = false
         winningPlayer = nil
+        triggerCPUTurnIfNeeded()
     }
 
     /// Clears all state and starts a completely fresh round.
     func resetGame() {
-        players = (0..<4).map { Player(id: $0) }
+        players = (0..<4).map { Player(id: $0, isCPU: $0 != 0) }
         currentTurn = 0
         discardPile = []
         hasDrawnThisTurn = false
         winningPlayer = nil
         shuffleWall()
         dealInitialHands()
+        triggerCPUTurnIfNeeded()
     }
 
     /// Draws a single tile for the provided player.
@@ -133,5 +138,25 @@ class GameState: ObservableObject {
         guard winningPlayer == nil else { return }
         currentTurn = (currentTurn + 1) % 4
         hasDrawnThisTurn = false
+        triggerCPUTurnIfNeeded()
+    }
+
+    /// Starts automated actions when the current player is a CPU.
+    private func triggerCPUTurnIfNeeded() {
+        guard winningPlayer == nil else { return }
+        guard currentTurn < players.count else { return }
+        let player = players[currentTurn]
+        guard player.isCPU else { return }
+
+        drawTile(for: player)
+
+        guard winningPlayer == nil else { return }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let self = self else { return }
+            guard self.currentTurn == player.id else { return }
+            guard let randomTile = self.players[player.id].hand.randomElement() else { return }
+            self.discardTile(randomTile, for: player)
+        }
     }
 }

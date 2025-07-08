@@ -22,7 +22,7 @@ Mahjong4/
 
 ## Development Phases
 1. **Phase 1 – Offline Prototype**: Build the basic skeleton, tile definitions, and simple UI.
-2. **Phase 2 – Game Logic**: Implement tile and hand management, scoring, and turn flow.
+2. **Phase 2 – Game Logic**: Implement tile and hand management, scoring, and turn flow. CPU-controlled players automatically draw and discard tiles on their turns.
 3. **Phase 3 – Networking**: Add multiplayer and networking capabilities.
 
 Updates to this plan will occur as development progresses.
