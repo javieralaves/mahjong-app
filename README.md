@@ -38,3 +38,6 @@ On their turn, the active player can tap **Draw Tile** to take a tile from the w
 
 ### Turn Cycling
 A simple turn manager now rotates play between all four participants in clockwise order (East, South, West, North). Only the active player's hand is visible and interactive. After a player draws and discards, `GameState` automatically advances `currentTurn` and the UI updates to show the next player.
+
+### Win Detection
+After each draw the hand is checked for a basic Mahjong win consisting of four melds and one pair. The logic lives in `Services/HandValidator.swift`. When a player draws a winning tile the game state sets `winningPlayer` and further turns are disabled. `MainView` displays a congratulatory message to indicate the winner.

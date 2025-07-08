@@ -17,6 +17,12 @@ struct MainView: View {
             Text("Mahjong4")
                 .font(.largeTitle)
 
+            if let winner = gameState.winningPlayer {
+                Text("\u{1F389} Player \(winner + 1) wins!")
+                    .font(.title)
+                    .foregroundColor(.green)
+            }
+
             Text("Current Turn: Player \(gameState.currentTurn + 1)")
                 .font(.headline)
 
@@ -29,12 +35,16 @@ struct MainView: View {
                         Button("Draw Tile") {
                             gameState.drawTile(for: player)
                         }
-                        .disabled(gameState.hasDrawnThisTurn || player.hand.count >= 14)
+                        .disabled(gameState.hasDrawnThisTurn ||
+                                  player.hand.count >= 14 ||
+                                  gameState.winningPlayer != nil)
 
                         TileRowView(
                             tiles: player.hand,
                             onTileTap: { tile in
-                                gameState.discardTile(tile, for: player)
+                                if gameState.winningPlayer == nil {
+                                    gameState.discardTile(tile, for: player)
+                                }
                             }
                         )
                     } else {
