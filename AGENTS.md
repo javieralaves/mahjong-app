@@ -31,6 +31,7 @@ This document describes the layout and conventions used in this repository. Alwa
 ## Player Model
 - Located at `Mahjong4/Models/Player.swift`.
 - Contains `id` (0–3) and `hand` (array of `Tile`).
+- New `isCPU` flag marks automated players. Player 0 is human while players 1–3 are CPU controlled.
 
 ## Sorting Convention
 - Sorting helpers live in `Utilities/TileHelpers.swift`.
@@ -47,6 +48,7 @@ This document describes the layout and conventions used in this repository. Alwa
 - `GameState` stores `currentTurn` (0-3) to track whose turn it is and exposes `advanceTurn()` which increments this value modulo four and resets `hasDrawnThisTurn`.
 - `drawTile(for:)` and `discardTile(_:for:)` must check that the passed player matches `currentTurn`. Successful discards call `advanceTurn()` automatically.
 - Views enable draw and discard interaction only for the active player indicated by `currentTurn`.
+- CPU behavior lives in `GameState` within `triggerCPUTurnIfNeeded()` which draws and discards for CPU players using those same methods.
 
 ### Win Validation
 - `Services/HandValidator.swift` contains `isWinningHand(_:)` which checks for four melds plus a pair.
